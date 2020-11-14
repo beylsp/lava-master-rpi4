@@ -10,6 +10,11 @@
 # Some additional examples are provided in comments below the default
 # configuration.
 
+# Set hostname
+preserve_hostname: false
+hostname: lmrpi
+manage_etc_hosts: true
+
 # Enable password authentication with the SSH daemon
 ssh_pwauth: true
 

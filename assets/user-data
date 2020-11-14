@@ -1,0 +1,75 @@
+#cloud-config
+
+# This is the user-data configuration file for cloud-init. By default this sets
+# up an initial user called "ubuntu" with password "ubuntu", which must be
+# changed at first login. However, many additional actions can be initiated on
+# first boot from this file. The cloud-init documentation has more details:
+#
+# https://cloudinit.readthedocs.io/
+#
+# Some additional examples are provided in comments below the default
+# configuration.
+
+# Enable password authentication with the SSH daemon
+ssh_pwauth: true
+
+# setup timezone
+timezone: Europe/Brussels
+
+# help in case of trouble
+debug:
+  verbose: true
+
+# enable ntp
+ntp:
+  enabled: true
+  ntp_client: chrony  # Uses cloud-init default chrony configuration
+
+
+# Add 'lava' as default user
+system_info:
+  default_user:
+    name: lava
+groups:
+  - lava
+users:
+  - name: lava
+    gecos: Lava
+    primary_group: lava
+    sudo: ["ALL=(ALL) NOPASSWD:ALL"]
+    shell: /bin/bash
+    lock_passwd: false
+    plain_text_passwd: lava
+    groups: [adm, audio, cdrom, dialout, dip, floppy, lxd, netdev, plugdev, sudo, video, plugdev]
+    chpasswd: { expire: false }
+
+# Update apt database and upgrade packages on first boot
+package_update: true
+package_upgrade: true
+
+# Install additional packages on first boot
+packages:
+  # shell & command line utilities:
+  - curl
+  # set python as default:
+  - python-is-python3
+  - python-dev-is-python3
+  - python3-pip
+  # install lava utils
+  - lavacli
+  - postgresql
+
+runcmd:
+  # make sure /home/lava owner is properly set
+  - chown -R lava:lava /home/lava/
+  # install argon1.sh
+  - curl https://raw.githubusercontent.com/meuter/argon-one-case-ubuntu-20.04/master/argon1.sh --output /usr/local/bin/install-argonone-case-scripts
+  - chmod a+x /usr/local/bin/install-argonone-case-scripts
+  # install lava-common and lava-server
+  - mkdir -p /opt/lava/
+  - curl https://codeload.github.com/Linaro/lava/tar.gz/2020.10 --output /opt/lava/lava-master.tar.gz
+  - tar xf /opt/lava/lava-master.tar.gz -C /opt/lava
+  - python /opt/lava/lava-2020.10/share/requires.py --package lava-common --distribution debian --suite bullseye --names > /opt/lava/lava-2020.10/deps.txt
+  - python /opt/lava/lava-2020.10/share/requires.py --package lava-server --distribution debian --suite bullseye --names >> /opt/lava/lava-2020.10/deps.txt
+  - apt install -y $(cat /opt/lava/lava-2020.10/deps.txt)
+  - cd /opt/lava/lava-2020.10 && python setup.py install lava-common && python setup.py install lava-server

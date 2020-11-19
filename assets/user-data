@@ -69,5 +69,5 @@ runcmd:
   - systemctl enable docker
   - systemctl start docker
   # install lava-docker
-  - git clone https://github.com/beylsp/lava-docker-compose-rpi.git lava-docker
-  - docker-compose -f lava-docker/docker-compose.yaml up -d
+  - git clone https://github.com/beylsp/lava-docker-compose-rpi.git /opt/lava-docker
+  - docker-compose --env-file /opt/lava-docker/.env -f /opt/lava-docker/docker-compose.yaml up -d

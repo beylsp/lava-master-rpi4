@@ -60,8 +60,13 @@ packages:
   - docker-compose
 
 runcmd:
+  # copy public key
+  - mkdir -p /home/lava/.ssh
+  - cp /boot/firmware/id_rsa.pub /home/lava/.ssh/authorized_keys
   # make sure /home/lava owner is properly set
   - chown -R lava:lava /home/lava/
+  - chmod 700 /home/lava/.ssh
+  - chmod 600 /home/lava/.ssh/authorized_keys
   # install argon1.sh
   - curl https://raw.githubusercontent.com/meuter/argon-one-case-ubuntu-20.04/master/argon1.sh --output /usr/local/bin/install-argonone-case-scripts
   - chmod a+x /usr/local/bin/install-argonone-case-scripts

@@ -20,7 +20,6 @@ run
 # upload cloud-init config and ssh public key
 mount /dev/sda1 /
 upload assets/user-data /user-data
-upload assets/.ssh/id_rsa.pub /id_rsa.pub
 umount /dev/sda1
 
 __EOF__

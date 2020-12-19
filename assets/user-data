@@ -58,6 +58,8 @@ packages:
   # install Docker
   - docker.io
   - docker-compose
+  # install lava utils
+  - lavacli
 
 runcmd:
   # make sure /home/lava owner is properly set

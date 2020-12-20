@@ -74,5 +74,5 @@ runcmd:
   - systemctl start docker
   # install lava-docker
   - git clone https://github.com/beylsp/lava-docker-compose-rpi.git /opt/lava-docker
-  - git clone https://github.com/beylsp/lava-devices.git /opt/lava-docker/etc/lava-server
+  - git clone https://github.com/beylsp/lava-devices.git /opt/lava
   - make -C /opt/lava-docker

@@ -78,3 +78,6 @@ runcmd:
   - git clone https://github.com/beylsp/lava-docker-compose-rpi.git /opt/lava-docker
   - git clone https://github.com/beylsp/lava-devices.git /opt/lava
   - make -C /opt/lava-docker
+  # install squad
+  - git clone https://github.com/beylsp/squad.git /opt/squad
+  - make -C /opt/squad

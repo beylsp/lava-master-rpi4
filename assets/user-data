@@ -71,6 +71,7 @@ runcmd:
   # install argon1.sh
   - curl https://raw.githubusercontent.com/meuter/argon-one-case-ubuntu-20.04/master/argon1.sh --output /usr/local/bin/install-argonone-case-scripts
   - chmod a+x /usr/local/bin/install-argonone-case-scripts
+  - /usr/local/bin/install-argonone-case-scripts
   # configure docker to start on boot
   - systemctl enable docker
   - systemctl start docker
